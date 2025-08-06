@@ -49,7 +49,11 @@ const AdminDashboard = () => {
   const handleAssetSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/assets', assetForm);
+      const payload = {
+        ...assetForm,
+        purchaseDate: assetForm.purchaseDate ? new Date(assetForm.purchaseDate).toISOString() : '',
+      };
+      await axios.post('/assets', payload);
       setShowAssetForm(false);
       setAssetForm({ name: '', category: '', serialNumber: '', purchaseDate: '', status: 'Available', imageUrl: '', imageData: '', imageContentType: '' });
       fetchData();

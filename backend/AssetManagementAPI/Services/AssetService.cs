@@ -69,8 +69,6 @@ namespace AssetManagementAPI.Services
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
                 ImageUrl = asset.ImageUrl,
-                ImageData = asset.ImageData,
-                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
@@ -104,8 +102,6 @@ namespace AssetManagementAPI.Services
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
                 ImageUrl = asset.ImageUrl,
-                ImageData = asset.ImageData,
-                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
@@ -136,8 +132,6 @@ namespace AssetManagementAPI.Services
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
                 ImageUrl = asset.ImageUrl,
-                ImageData = asset.ImageData,
-                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
