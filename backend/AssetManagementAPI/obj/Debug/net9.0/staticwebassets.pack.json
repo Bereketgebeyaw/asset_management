@@ -9,12 +9,20 @@
       "PackagePath": "staticwebassets/uploads/30b3820f-a5df-40c6-843f-25b232ff4ece.png"
     },
     {
+      "Id": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/9139cc7e-4ea3-4ba1-baa1-05c03e91383a.png",
+      "PackagePath": "staticwebassets/uploads/9139cc7e-4ea3-4ba1-baa1-05c03e91383a.png"
+    },
+    {
       "Id": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/94216a56-d850-4ab8-94be-00b86f339522.png",
       "PackagePath": "staticwebassets/uploads/94216a56-d850-4ab8-94be-00b86f339522.png"
     },
     {
       "Id": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png",
       "PackagePath": "staticwebassets/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png"
+    },
+    {
+      "Id": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/d540ffc9-0185-48ba-8e7a-5fe305e622f2.png",
+      "PackagePath": "staticwebassets/uploads/d540ffc9-0185-48ba-8e7a-5fe305e622f2.png"
     },
     {
       "Id": "obj/Debug/net9.0/staticwebassets/msbuild.AssetManagementAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

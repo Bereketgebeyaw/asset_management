@@ -154,6 +154,9 @@ namespace AssetManagementAPI.Services
             {
                 request.Asset.Status = "Assigned";
                 request.Asset.UpdatedAt = DateTime.UtcNow;
+                
+                // Explicitly mark the asset as modified to ensure the change is tracked
+                _context.Entry(request.Asset).State = EntityState.Modified;
             }
 
             await _context.SaveChangesAsync();

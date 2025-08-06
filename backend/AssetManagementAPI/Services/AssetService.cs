@@ -91,6 +91,8 @@ namespace AssetManagementAPI.Services
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
                 ImageUrl = asset.ImageUrl,
+                ImageData = asset.ImageData,
+                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
@@ -124,6 +126,8 @@ namespace AssetManagementAPI.Services
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
                 ImageUrl = asset.ImageUrl,
+                ImageData = asset.ImageData,
+                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
@@ -134,6 +138,7 @@ namespace AssetManagementAPI.Services
             var asset = await _context.Assets.FindAsync(id);
             if (asset == null) return null;
 
+            // Update all fields except Status (status should only change through requests)
             asset.Name = updateAssetDto.Name;
             asset.Category = updateAssetDto.Category;
             asset.SerialNumber = updateAssetDto.SerialNumber;
@@ -142,6 +147,9 @@ namespace AssetManagementAPI.Services
             asset.ImageData = updateAssetDto.ImageData;
             asset.ImageContentType = updateAssetDto.ImageContentType;
             asset.UpdatedAt = DateTime.UtcNow;
+
+            // Explicitly mark the asset as modified to ensure the change is tracked
+            _context.Entry(asset).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
@@ -152,8 +160,10 @@ namespace AssetManagementAPI.Services
                 Category = asset.Category,
                 SerialNumber = asset.SerialNumber,
                 PurchaseDate = asset.PurchaseDate,
-                Status = asset.Status,
+                Status = asset.Status, // Preserve the existing status
                 ImageUrl = asset.ImageUrl,
+                ImageData = asset.ImageData,
+                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };

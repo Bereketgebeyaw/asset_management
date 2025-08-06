@@ -63,15 +63,22 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       setError('');
-      const payload = {
-        ...assetForm,
-        purchaseDate: assetForm.purchaseDate ? new Date(assetForm.purchaseDate).toISOString() : '',
-      };
-
+      
       if (editingAsset) {
+        // For updates, exclude status field since it's disabled and shouldn't be changed
+        const { status, ...updatePayload } = assetForm;
+        const payload = {
+          ...updatePayload,
+          purchaseDate: assetForm.purchaseDate ? new Date(assetForm.purchaseDate).toISOString() : '',
+        };
         await assetService.updateAsset(editingAsset.id, payload);
         setSuccess('Asset updated successfully!');
       } else {
+        // For new assets, include all fields including status
+        const payload = {
+          ...assetForm,
+          purchaseDate: assetForm.purchaseDate ? new Date(assetForm.purchaseDate).toISOString() : '',
+        };
         await assetService.createAsset(payload);
         setSuccess('Asset created successfully!');
       }
@@ -135,7 +142,8 @@ const AdminDashboard = () => {
 
     try {
       setUploading(true);
-      const response = await fetch('/api/fileupload/upload', {
+      const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5124';
+      const response = await fetch(`${baseURL}/api/fileupload/upload`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -143,7 +151,10 @@ const AdminDashboard = () => {
         }
       });
       
-      if (!response.ok) throw new Error('Upload failed');
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || 'Upload failed');
+      }
       
       const data = await response.json();
       setAssetForm(prev => ({ 
@@ -154,7 +165,7 @@ const AdminDashboard = () => {
       }));
       setSelectedFile(null);
     } catch (err) {
-      setError('Failed to upload image');
+      setError(`Failed to upload image: ${err.message}`);
       console.error('Upload error:', err);
     } finally {
       setUploading(false);
@@ -368,12 +379,18 @@ const AdminDashboard = () => {
                           className="form-input"
                           value={assetForm.status}
                           onChange={(e) => setAssetForm({...assetForm, status: e.target.value})}
+                          disabled={editingAsset}
                           required
                         >
                           <option value="Available">Available</option>
                           <option value="Assigned">Assigned</option>
                           <option value="Maintenance">Maintenance</option>
                         </select>
+                        {editingAsset && (
+                          <small className="form-help-text">
+                            Status can only be changed through asset requests
+                          </small>
+                        )}
                       </div>
                       <div className="form-group">
                         <label className="form-label">Asset Image</label>
@@ -461,7 +478,9 @@ const AdminDashboard = () => {
                       <td className="asset-actions">
                         <button
                           onClick={() => editAsset(asset)}
-                          className="action-button edit"
+                          className={`action-button edit ${(asset.status === 'Approved' || asset.status === 'Assigned') ? 'disabled' : ''}`}
+                          disabled={asset.status === 'Approved' || asset.status === 'Assigned'}
+                          title={asset.status === 'Approved' || asset.status === 'Assigned' ? 'Cannot edit approved or assigned assets' : 'Edit asset'}
                         >
                           ✏️ Edit
                         </button>

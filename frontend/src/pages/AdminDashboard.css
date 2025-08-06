@@ -423,6 +423,26 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.form-input:disabled {
+  background-color: #f8fafc;
+  color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-input:disabled:focus {
+  border-color: #d1d5db;
+  box-shadow: none;
+}
+
+.form-help-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
 .upload-status {
   font-size: 0.875rem;
   color: #667eea;
@@ -580,6 +600,19 @@
 .action-button.edit:hover {
   background: #fde68a;
   transform: translateY(-1px);
+}
+
+.action-button.edit.disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.action-button.edit.disabled:hover {
+  background: #f1f5f9;
+  transform: none;
+  cursor: not-allowed;
 }
 
 .action-button.delete {
