@@ -1,12 +1,125 @@
 {
   "Version": 1,
-  "Hash": "afhQ/ZgEiAhSshRDtjOqeoIOR/A61mq811LDDnpyNTw=",
+  "Hash": "8ADTmNQezRWjbUo7442XuIyc0BqBcqJ7/GIupBtuAtQ=",
   "Source": "AssetManagementAPI",
   "BasePath": "_content/AssetManagementAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "AssetManagementAPI/wwwroot",
+      "Source": "AssetManagementAPI",
+      "ContentRoot": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/",
+      "BasePath": "_content/AssetManagementAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png",
+      "SourceId": "AssetManagementAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/",
+      "BasePath": "_content/AssetManagementAPI",
+      "RelativePath": "uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "kcrxloh0ry",
+      "Integrity": "TFKL4eYa1sbnNg08GJz7F9ACkzYqiPf0H1+EF0j5J+4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.kcrxloh0ry.png",
+      "AssetFile": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "21208"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TFKL4eYa1sbnNg08GJz7F9ACkzYqiPf0H1+EF0j5J+4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 06 Aug 2025 00:25:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kcrxloh0ry"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TFKL4eYa1sbnNg08GJz7F9ACkzYqiPf0H1+EF0j5J+4="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png",
+      "AssetFile": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "21208"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TFKL4eYa1sbnNg08GJz7F9ACkzYqiPf0H1+EF0j5J+4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 06 Aug 2025 00:25:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-TFKL4eYa1sbnNg08GJz7F9ACkzYqiPf0H1+EF0j5J+4="
+        }
+      ]
+    }
+  ]
 }

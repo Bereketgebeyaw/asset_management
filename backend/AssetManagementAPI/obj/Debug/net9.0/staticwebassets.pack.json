@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/wwwroot/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png",
+      "PackagePath": "staticwebassets/uploads/ccc71eb8-d497-4505-bd30-bfcfabebbe8c.png"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.AssetManagementAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.AssetManagementAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.AssetManagementAPI.props",
+      "PackagePath": "build\\AssetManagementAPI.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.AssetManagementAPI.props",
+      "PackagePath": "buildMultiTargeting\\AssetManagementAPI.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.AssetManagementAPI.props",
+      "PackagePath": "buildTransitive\\AssetManagementAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

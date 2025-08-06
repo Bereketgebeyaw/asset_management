@@ -17,8 +17,13 @@ const AdminDashboard = () => {
     category: '',
     serialNumber: '',
     purchaseDate: '',
-    status: 'Available'
+    status: 'Available',
+    imageUrl: '',
+    imageData: '',
+    imageContentType: ''
   });
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -46,7 +51,7 @@ const AdminDashboard = () => {
     try {
       await axios.post('/assets', assetForm);
       setShowAssetForm(false);
-      setAssetForm({ name: '', category: '', serialNumber: '', purchaseDate: '', status: 'Available' });
+      setAssetForm({ name: '', category: '', serialNumber: '', purchaseDate: '', status: 'Available', imageUrl: '', imageData: '', imageContentType: '' });
       fetchData();
     } catch (err) {
       setError('Failed to create asset');
@@ -70,6 +75,45 @@ const AdminDashboard = () => {
       } catch (err) {
         setError('Failed to delete asset');
       }
+    }
+  };
+
+  const handleFileUpload = async (file) => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      setUploading(true);
+      const response = await axios.post('/fileupload/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      // Handle both URL and binary data
+      const { imageUrl, imageData, contentType } = response.data;
+      setAssetForm(prev => ({ 
+        ...prev, 
+        imageUrl: imageUrl,
+        imageData: imageData,
+        imageContentType: contentType
+      }));
+      setSelectedFile(null);
+    } catch (err) {
+      setError('Failed to upload image');
+      console.error('Upload error:', err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      handleFileUpload(file);
     }
   };
 
@@ -189,6 +233,26 @@ const AdminDashboard = () => {
                       />
                     </div>
                     <div className="form-group">
+                      <label className="form-label">Asset Image</label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="form-input"
+                        disabled={uploading}
+                      />
+                      {uploading && <p className="text-sm text-blue-600 mt-1">Uploading...</p>}
+                      {(assetForm.imageUrl || assetForm.imageData) && (
+                        <div className="mt-2">
+                          <img 
+                            src={assetForm.imageData ? `data:${assetForm.imageContentType};base64,${assetForm.imageData}` : assetForm.imageUrl} 
+                            alt="Asset preview" 
+                            className="w-20 h-20 object-cover rounded border"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div className="form-group">
                       <label className="form-label">Status</label>
                       <select
                         className="form-input"
@@ -221,6 +285,7 @@ const AdminDashboard = () => {
               <table className="table">
                 <thead>
                   <tr>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Category</th>
                     <th>Serial Number</th>
@@ -232,6 +297,19 @@ const AdminDashboard = () => {
                 <tbody>
                   {assets.map((asset) => (
                     <tr key={asset.id}>
+                      <td>
+                        {(asset.imageUrl || asset.imageData) ? (
+                          <img 
+                            src={asset.imageData ? `data:${asset.imageContentType};base64,${asset.imageData}` : asset.imageUrl} 
+                            alt={asset.name}
+                            className="w-12 h-12 object-cover rounded border"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center">
+                            <span className="text-gray-500 text-xs">No Image</span>
+                          </div>
+                        )}
+                      </td>
                       <td className="font-medium">{asset.name}</td>
                       <td>{asset.category}</td>
                       <td className="font-mono text-sm">{asset.serialNumber}</td>

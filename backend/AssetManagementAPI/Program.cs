@@ -100,6 +100,7 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<AssetRequestService>();
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
 var app = builder.Build();
 
@@ -110,6 +111,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Serve static files (for uploaded images)
+app.UseStaticFiles();
 
 // Use CORS
 app.UseCors("AllowReactApp");

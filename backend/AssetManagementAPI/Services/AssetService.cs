@@ -25,6 +25,9 @@ namespace AssetManagementAPI.Services
                     SerialNumber = a.SerialNumber,
                     PurchaseDate = a.PurchaseDate,
                     Status = a.Status,
+                    ImageUrl = a.ImageUrl,
+                    ImageData = a.ImageData,
+                    ImageContentType = a.ImageContentType,
                     CreatedAt = a.CreatedAt,
                     UpdatedAt = a.UpdatedAt
                 })
@@ -43,6 +46,9 @@ namespace AssetManagementAPI.Services
                     SerialNumber = a.SerialNumber,
                     PurchaseDate = a.PurchaseDate,
                     Status = a.Status,
+                    ImageUrl = a.ImageUrl,
+                    ImageData = a.ImageData,
+                    ImageContentType = a.ImageContentType,
                     CreatedAt = a.CreatedAt,
                     UpdatedAt = a.UpdatedAt
                 })
@@ -62,6 +68,9 @@ namespace AssetManagementAPI.Services
                 SerialNumber = asset.SerialNumber,
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
+                ImageUrl = asset.ImageUrl,
+                ImageData = asset.ImageData,
+                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
@@ -76,6 +85,9 @@ namespace AssetManagementAPI.Services
                 SerialNumber = createAssetDto.SerialNumber,
                 PurchaseDate = DateTime.SpecifyKind(createAssetDto.PurchaseDate, DateTimeKind.Utc),
                 Status = createAssetDto.Status ?? "Available",
+                ImageUrl = createAssetDto.ImageUrl,
+                ImageData = createAssetDto.ImageData,
+                ImageContentType = createAssetDto.ImageContentType,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -91,6 +103,9 @@ namespace AssetManagementAPI.Services
                 SerialNumber = asset.SerialNumber,
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
+                ImageUrl = asset.ImageUrl,
+                ImageData = asset.ImageData,
+                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };
@@ -105,6 +120,9 @@ namespace AssetManagementAPI.Services
             asset.Category = updateAssetDto.Category;
             asset.SerialNumber = updateAssetDto.SerialNumber;
             asset.PurchaseDate = DateTime.SpecifyKind(updateAssetDto.PurchaseDate, DateTimeKind.Utc);
+            asset.ImageUrl = updateAssetDto.ImageUrl;
+            asset.ImageData = updateAssetDto.ImageData;
+            asset.ImageContentType = updateAssetDto.ImageContentType;
             asset.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
@@ -117,6 +135,9 @@ namespace AssetManagementAPI.Services
                 SerialNumber = asset.SerialNumber,
                 PurchaseDate = asset.PurchaseDate,
                 Status = asset.Status,
+                ImageUrl = asset.ImageUrl,
+                ImageData = asset.ImageData,
+                ImageContentType = asset.ImageContentType,
                 CreatedAt = asset.CreatedAt,
                 UpdatedAt = asset.UpdatedAt
             };

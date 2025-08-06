@@ -52,3 +52,5 @@
 /Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
 /Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/bin/Debug/net9.0/DotNetEnv.dll
 /Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/bin/Debug/net9.0/Sprache.dll
+/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/obj/Debug/net9.0/AssetManagementAPI.sourcelink.json
+/Users/mac/Desktop/asset-management-system/backend/AssetManagementAPI/bin/Debug/net9.0/AssetManagementAPI.staticwebassets.runtime.json

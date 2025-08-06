@@ -10,6 +10,9 @@ namespace AssetManagementAPI.DTOs
         public string SerialNumber { get; set; } = string.Empty;
         public DateTime PurchaseDate { get; set; }
         public string Status { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
+        public byte[]? ImageData { get; set; }
+        public string? ImageContentType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
@@ -28,6 +31,12 @@ namespace AssetManagementAPI.DTOs
         public DateTime PurchaseDate { get; set; }
         
         public string? Status { get; set; }
+        
+        public string? ImageUrl { get; set; }
+        
+        public byte[]? ImageData { get; set; }
+        
+        public string? ImageContentType { get; set; }
     }
 
     public class UpdateAssetDto
@@ -42,5 +51,11 @@ namespace AssetManagementAPI.DTOs
         public string SerialNumber { get; set; } = string.Empty;
         
         public DateTime PurchaseDate { get; set; }
+        
+        public string? ImageUrl { get; set; }
+        
+        public byte[]? ImageData { get; set; }
+        
+        public string? ImageContentType { get; set; }
     }
 } 

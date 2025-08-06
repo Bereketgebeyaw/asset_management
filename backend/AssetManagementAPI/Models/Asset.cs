@@ -20,6 +20,10 @@ namespace AssetManagementAPI.Models
         [Required]
         public string Status { get; set; } = "Available"; // "Available" or "Assigned"
         
+        public string? ImageUrl { get; set; } // URL to the uploaded image (for backward compatibility)
+        public byte[]? ImageData { get; set; } // Binary image data
+        public string? ImageContentType { get; set; } // MIME type of the image
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         
         public DateTime? UpdatedAt { get; set; }
