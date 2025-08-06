@@ -1,15 +1,21 @@
 import api from './api';
 
 export const assetService = {
-  // Get all available assets
+  // Get all assets
+  getAllAssets: async () => {
+    const response = await api.get('/api/assets');
+    return response.data;
+  },
+
+  // Get available assets
   getAvailableAssets: async () => {
     const response = await api.get('/api/assets/available');
     return response.data;
   },
 
-  // Get all assets (for admin)
-  getAllAssets: async () => {
-    const response = await api.get('/api/assets');
+  // Get assigned assets for current user
+  getAssignedAssets: async () => {
+    const response = await api.get('/api/assets/assigned');
     return response.data;
   },
 
@@ -19,19 +25,19 @@ export const assetService = {
     return response.data;
   },
 
-  // Create new asset
+  // Create new asset (Admin only)
   createAsset: async (assetData) => {
     const response = await api.post('/api/assets', assetData);
     return response.data;
   },
 
-  // Update asset
+  // Update asset (Admin only)
   updateAsset: async (id, assetData) => {
     const response = await api.put(`/api/assets/${id}`, assetData);
     return response.data;
   },
 
-  // Delete asset
+  // Delete asset (Admin only)
   deleteAsset: async (id) => {
     const response = await api.delete(`/api/assets/${id}`);
     return response.data;

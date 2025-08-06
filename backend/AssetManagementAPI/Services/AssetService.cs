@@ -55,6 +55,28 @@ namespace AssetManagementAPI.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<AssetDto>> GetAssignedAssetsAsync(int userId)
+        {
+            return await _context.AssetRequests
+                .Include(ar => ar.Asset)
+                .Where(ar => ar.UserId == userId && ar.Status == "Approved")
+                .Select(ar => new AssetDto
+                {
+                    Id = ar.Asset.Id,
+                    Name = ar.Asset.Name,
+                    Category = ar.Asset.Category,
+                    SerialNumber = ar.Asset.SerialNumber,
+                    PurchaseDate = ar.Asset.PurchaseDate,
+                    Status = ar.Asset.Status,
+                    ImageUrl = ar.Asset.ImageUrl,
+                    ImageData = ar.Asset.ImageData,
+                    ImageContentType = ar.Asset.ImageContentType,
+                    CreatedAt = ar.Asset.CreatedAt,
+                    UpdatedAt = ar.Asset.UpdatedAt
+                })
+                .ToListAsync();
+        }
+
         public async Task<AssetDto?> GetAssetByIdAsync(int id)
         {
             var asset = await _context.Assets.FindAsync(id);

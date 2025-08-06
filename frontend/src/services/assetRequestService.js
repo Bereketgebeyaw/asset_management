@@ -31,6 +31,12 @@ export const assetRequestService = {
     return response.data;
   },
 
+  // Process asset request (approve/reject) - Admin only
+  processRequest: async (id, processData) => {
+    const response = await api.put(`/api/assetrequests/${id}/process`, processData);
+    return response.data;
+  },
+
   // Approve asset request
   approveRequest: async (id) => {
     const response = await api.put(`/api/assetrequests/${id}/process`, { status: 'Approved' });

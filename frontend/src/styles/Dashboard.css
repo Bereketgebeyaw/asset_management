@@ -1,7 +1,7 @@
 /* Employee Dashboard - Enhanced Modern Design */
 .dashboard {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   position: relative;
   overflow-x: hidden;
@@ -15,9 +15,9 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(240, 147, 251, 0.03) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -28,7 +28,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
   pointer-events: none;
 }
 
@@ -41,14 +41,13 @@
 }
 
 .content-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(30px);
+  background: #ffffff;
   border-radius: 24px;
   padding: 3rem;
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+    0 25px 50px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
   animation: slideInUp 0.8s ease-out;
@@ -130,10 +129,10 @@
 
 .assets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 2.5rem;
-  margin-top: 3rem;
-  animation: fadeInUp 0.8s ease-out 0.4s both;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
 }
 
 .empty-state {
@@ -145,21 +144,49 @@
   border-radius: 20px;
   border: 2px dashed rgba(102, 126, 234, 0.2);
   margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .empty-state::before {
-  content: '📦';
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.empty-state-icon {
   font-size: 4rem;
-  display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   animation: float 3s ease-in-out infinite;
+  display: block;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .empty-state p {
-  font-size: 1.375rem;
+  font-size: 1.125rem;
   margin: 0;
   font-weight: 500;
   color: #6b7280;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 /* Enhanced Animations */
@@ -228,9 +255,105 @@
 .content-card:hover {
   transform: translateY(-5px);
   box-shadow: 
-    0 35px 70px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.4);
+    0 35px 70px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  gap: 0.5rem;
+}
+
+.tab-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.tab-button:hover::before {
+  opacity: 0.1;
+}
+
+.tab-button:hover {
+  color: #374151;
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.tab-button.active::before {
+  opacity: 0;
+}
+
+.tab-button.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.tab-icon {
+  font-size: 1.125rem;
+  z-index: 1;
+  position: relative;
+}
+
+.tab-text {
+  font-weight: 700;
+  z-index: 1;
+  position: relative;
+}
+
+/* Responsive Tab Navigation */
+@media (max-width: 768px) {
+  .tab-navigation {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .tab-button {
+    padding: 0.75rem 1rem;
+  }
+
+  .tab-text {
+    font-size: 0.8rem;
+  }
 }
 
 /* Responsive Design */
@@ -247,6 +370,7 @@
   .assets-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    margin-top: 1.5rem;
   }
   
   .page-title h1 {
@@ -259,6 +383,12 @@
   
   .page-title::before {
     font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .assets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   }
 }
 

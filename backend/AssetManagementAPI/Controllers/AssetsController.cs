@@ -32,6 +32,14 @@ namespace AssetManagementAPI.Controllers
             return Ok(assets);
         }
 
+        [HttpGet("assigned")]
+        public async Task<ActionResult<IEnumerable<AssetDto>>> GetAssignedAssets()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var assets = await _assetService.GetAssignedAssetsAsync(userId);
+            return Ok(assets);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<AssetDto>> GetAsset(int id)
         {

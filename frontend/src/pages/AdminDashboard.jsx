@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { assetService } from '../services/assetService';
+import { assetRequestService } from '../services/assetRequestService';
+import Alert from '../components/common/Alert';
+import Loading from '../components/common/Loading';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('assets');
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('overview');
   const [assets, setAssets] = useState([]);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   // Asset form state
   const [showAssetForm, setShowAssetForm] = useState(false);
+  const [editingAsset, setEditingAsset] = useState(null);
   const [assetForm, setAssetForm] = useState({
     name: '',
     category: '',
@@ -26,18 +34,23 @@ const AdminDashboard = () => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    if (!user || user.role !== 'Admin') {
+      navigate('/dashboard');
+      return;
+    }
     fetchData();
-  }, []);
+  }, [user, navigate]);
 
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError('');
       const [assetsResponse, requestsResponse] = await Promise.all([
-        axios.get('/assets'),
-        axios.get('/assetrequests')
+        assetService.getAllAssets(),
+        assetRequestService.getAllRequests()
       ]);
-      setAssets(assetsResponse.data);
-      setRequests(requestsResponse.data);
+      setAssets(assetsResponse);
+      setRequests(requestsResponse);
     } catch (err) {
       setError('Failed to fetch data');
       console.error('Error fetching data:', err);
@@ -49,37 +62,69 @@ const AdminDashboard = () => {
   const handleAssetSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError('');
       const payload = {
         ...assetForm,
         purchaseDate: assetForm.purchaseDate ? new Date(assetForm.purchaseDate).toISOString() : '',
       };
-      await axios.post('/assets', payload);
+
+      if (editingAsset) {
+        await assetService.updateAsset(editingAsset.id, payload);
+        setSuccess('Asset updated successfully!');
+      } else {
+        await assetService.createAsset(payload);
+        setSuccess('Asset created successfully!');
+      }
+
       setShowAssetForm(false);
+      setEditingAsset(null);
       setAssetForm({ name: '', category: '', serialNumber: '', purchaseDate: '', status: 'Available', imageUrl: '', imageData: '', imageContentType: '' });
       fetchData();
     } catch (err) {
-      setError('Failed to create asset');
+      setError('Failed to save asset');
+      console.error('Error saving asset:', err);
     }
   };
 
   const handleRequestAction = async (requestId, action) => {
     try {
-      await axios.put(`/assetrequests/${requestId}/process`, { action });
+      setError('');
+      await assetRequestService.processRequest(requestId, { status: action === 'approve' ? 'Approved' : 'Rejected' });
+      setSuccess(`Request ${action === 'approve' ? 'approved' : 'rejected'} successfully!`);
       fetchData();
     } catch (err) {
       setError('Failed to process request');
+      console.error('Error processing request:', err);
     }
   };
 
   const deleteAsset = async (assetId) => {
     if (window.confirm('Are you sure you want to delete this asset?')) {
       try {
-        await axios.delete(`/assets/${assetId}`);
+        setError('');
+        await assetService.deleteAsset(assetId);
+        setSuccess('Asset deleted successfully!');
         fetchData();
       } catch (err) {
         setError('Failed to delete asset');
+        console.error('Error deleting asset:', err);
       }
     }
+  };
+
+  const editAsset = (asset) => {
+    setEditingAsset(asset);
+    setAssetForm({
+      name: asset.name,
+      category: asset.category,
+      serialNumber: asset.serialNumber,
+      purchaseDate: asset.purchaseDate ? new Date(asset.purchaseDate).toISOString().split('T')[0] : '',
+      status: asset.status,
+      imageUrl: asset.imageUrl || '',
+      imageData: asset.imageData || '',
+      imageContentType: asset.imageContentType || ''
+    });
+    setShowAssetForm(true);
   };
 
   const handleFileUpload = async (file) => {
@@ -90,19 +135,22 @@ const AdminDashboard = () => {
 
     try {
       setUploading(true);
-      const response = await axios.post('/fileupload/upload', formData, {
+      const response = await fetch('/api/fileupload/upload', {
+        method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       });
       
-      // Handle both URL and binary data
-      const { imageUrl, imageData, contentType } = response.data;
+      if (!response.ok) throw new Error('Upload failed');
+      
+      const data = await response.json();
       setAssetForm(prev => ({ 
         ...prev, 
-        imageUrl: imageUrl,
-        imageData: imageData,
-        imageContentType: contentType
+        imageUrl: data.imageUrl || '',
+        imageData: data.imageData || '',
+        imageContentType: data.contentType || ''
       }));
       setSelectedFile(null);
     } catch (err) {
@@ -121,160 +169,245 @@ const AdminDashboard = () => {
     }
   };
 
+  const getStats = () => {
+    const pendingRequests = requests.filter(r => r.status === 'Pending').length;
+    return { pendingRequests };
+  };
+
+  const stats = getStats();
+
   if (loading) {
-    return (
-      <div className="min-h-screen bg-blue-50 flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
-      </div>
-    );
+    return <Loading message="Loading admin dashboard..." />;
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Navigation */}
-      <nav className="navbar">
-        <div className="container">
-          <div className="flex justify-between items-center py-4">
-            <div className="text-2xl font-bold text-blue-600">Top Link Technology</div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600 font-medium">Admin: {user?.email}</span>
-              <button onClick={logout} className="btn btn-secondary">Logout</button>
+    <div className="admin-dashboard">
+      {/* Header */}
+      <header className="admin-header">
+        <div className="header-content">
+          <div className="header-left">
+            <h1 className="header-title">Admin Dashboard</h1>
+            <p className="header-subtitle">Manage assets and requests</p>
+          </div>
+          <div className="header-right">
+            <div className="user-info">
+              <span className="user-role">Admin</span>
+              <span className="user-email">{user?.email}</span>
             </div>
+            <button onClick={logout} className="logout-button">
+              <span className="logout-icon">🚪</span>
+              <span>Logout</span>
+            </button>
           </div>
         </div>
-      </nav>
+      </header>
 
-      <div className="container py-8">
-        {/* Error Message */}
+      <main className="admin-content">
+        {/* Alerts */}
         {error && (
-          <div className="alert alert-error mb-6">
-            {error}
-            <button onClick={() => setError('')} className="ml-2 text-white">×</button>
-          </div>
+          <Alert 
+            type="error" 
+            message={error} 
+            onClose={() => setError('')} 
+            autoClose={true}
+            duration={5000}
+          />
+        )}
+        
+        {success && (
+          <Alert 
+            type="success" 
+            message={success} 
+            onClose={() => setSuccess('')} 
+            autoClose={true}
+            duration={3000}
+          />
         )}
 
         {/* Tab Navigation */}
-        <div className="tab-container">
-          <div className="flex space-x-2">
-            <button
-              onClick={() => setActiveTab('assets')}
-              className={`tab-button ${activeTab === 'assets' ? 'active' : ''}`}
-            >
-              Assets Management
-            </button>
-            <button
-              onClick={() => setActiveTab('requests')}
-              className={`tab-button ${activeTab === 'requests' ? 'active' : ''}`}
-            >
-              Asset Requests ({requests.filter(r => r.status === 'Pending').length})
-            </button>
-          </div>
+        <div className="admin-tabs">
+          <button
+            className={`admin-tab ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            <span className="tab-icon">📊</span>
+            <span className="tab-text">Overview</span>
+          </button>
+          <button
+            className={`admin-tab ${activeTab === 'assets' ? 'active' : ''}`}
+            onClick={() => setActiveTab('assets')}
+          >
+            <span className="tab-icon">📦</span>
+            <span className="tab-text">Assets Management</span>
+          </button>
+          <button
+            className={`admin-tab ${activeTab === 'requests' ? 'active' : ''}`}
+            onClick={() => setActiveTab('requests')}
+          >
+            <span className="tab-icon">📋</span>
+            <span className="tab-text">Asset Requests</span>
+            {stats.pendingRequests > 0 && (
+              <span className="request-badge">{stats.pendingRequests}</span>
+            )}
+          </button>
         </div>
+
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="overview-section">
+            <div className="recent-activity">
+              <h2 className="section-title">Recent Activity</h2>
+              <div className="activity-list">
+                {requests.slice(0, 5).map((request) => (
+                  <div key={request.id} className="activity-item">
+                    <div className="activity-icon">📋</div>
+                    <div className="activity-content">
+                      <p className="activity-text">
+                        <strong>{request.userEmail}</strong> requested <strong>{request.assetName}</strong>
+                      </p>
+                      <span className="activity-time">
+                        {new Date(request.requestDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className={`activity-status ${request.status.toLowerCase()}`}>
+                      {request.status}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Assets Tab */}
         {activeTab === 'assets' && (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold">Assets Management</h1>
+          <div className="assets-section">
+            <div className="section-header">
+              <h2 className="section-title">Assets Management</h2>
               <button
                 onClick={() => setShowAssetForm(true)}
-                className="btn btn-primary"
+                className="add-asset-button"
               >
-                Add New Asset
+                <span className="button-icon">➕</span>
+                <span>Add New Asset</span>
               </button>
             </div>
 
             {/* Asset Form Modal */}
             {showAssetForm && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <h2 className="text-2xl font-bold mb-4">Add New Asset</h2>
-                  <form onSubmit={handleAssetSubmit}>
-                    <div className="form-group">
-                      <label className="form-label">Name</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        value={assetForm.name}
-                        onChange={(e) => setAssetForm({...assetForm, name: e.target.value})}
-                        required
-                      />
+              <div className="modal-overlay" onClick={() => setShowAssetForm(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                  <div className="modal-header">
+                    <h2 className="modal-title">
+                      {editingAsset ? 'Edit Asset' : 'Add New Asset'}
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setShowAssetForm(false);
+                        setEditingAsset(null);
+                        setAssetForm({ name: '', category: '', serialNumber: '', purchaseDate: '', status: 'Available', imageUrl: '', imageData: '', imageContentType: '' });
+                      }}
+                      className="modal-close"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <form onSubmit={handleAssetSubmit} className="asset-form">
+                    <div className="form-grid">
+                      <div className="form-group">
+                        <label className="form-label">Name</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={assetForm.name}
+                          onChange={(e) => setAssetForm({...assetForm, name: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Category</label>
+                        <select
+                          className="form-input"
+                          value={assetForm.category}
+                          onChange={(e) => setAssetForm({...assetForm, category: e.target.value})}
+                          required
+                        >
+                          <option value="">Select Category</option>
+                          <option value="Laptop">Laptop</option>
+                          <option value="Phone">Phone</option>
+                          <option value="Monitor">Monitor</option>
+                          <option value="Tablet">Tablet</option>
+                          <option value="Printer">Printer</option>
+                          <option value="Scanner">Scanner</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Serial Number</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={assetForm.serialNumber}
+                          onChange={(e) => setAssetForm({...assetForm, serialNumber: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Purchase Date</label>
+                        <input
+                          type="date"
+                          className="form-input"
+                          value={assetForm.purchaseDate}
+                          onChange={(e) => setAssetForm({...assetForm, purchaseDate: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Status</label>
+                        <select
+                          className="form-input"
+                          value={assetForm.status}
+                          onChange={(e) => setAssetForm({...assetForm, status: e.target.value})}
+                          required
+                        >
+                          <option value="Available">Available</option>
+                          <option value="Assigned">Assigned</option>
+                          <option value="Maintenance">Maintenance</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Asset Image</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="form-input"
+                          disabled={uploading}
+                        />
+                        {uploading && <p className="upload-status">Uploading...</p>}
+                        {(assetForm.imageUrl || assetForm.imageData) && (
+                          <div className="image-preview">
+                            <img 
+                              src={assetForm.imageData ? `data:${assetForm.imageContentType};base64,${assetForm.imageData}` : assetForm.imageUrl} 
+                              alt="Asset preview" 
+                              className="preview-image"
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label className="form-label">Category</label>
-                      <select
-                        className="form-input"
-                        value={assetForm.category}
-                        onChange={(e) => setAssetForm({...assetForm, category: e.target.value})}
-                        required
-                      >
-                        <option value="">Select Category</option>
-                        <option value="Laptop">Laptop</option>
-                        <option value="Phone">Phone</option>
-                        <option value="Monitor">Monitor</option>
-                        <option value="Tablet">Tablet</option>
-                        <option value="Other">Other</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Serial Number</label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        value={assetForm.serialNumber}
-                        onChange={(e) => setAssetForm({...assetForm, serialNumber: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Purchase Date</label>
-                      <input
-                        type="date"
-                        className="form-input"
-                        value={assetForm.purchaseDate}
-                        onChange={(e) => setAssetForm({...assetForm, purchaseDate: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Asset Image</label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="form-input"
-                        disabled={uploading}
-                      />
-                      {uploading && <p className="text-sm text-blue-600 mt-1">Uploading...</p>}
-                      {(assetForm.imageUrl || assetForm.imageData) && (
-                        <div className="mt-2">
-                          <img 
-                            src={assetForm.imageData ? `data:${assetForm.imageContentType};base64,${assetForm.imageData}` : assetForm.imageUrl} 
-                            alt="Asset preview" 
-                            className="w-20 h-20 object-cover rounded border"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Status</label>
-                      <select
-                        className="form-input"
-                        value={assetForm.status}
-                        onChange={(e) => setAssetForm({...assetForm, status: e.target.value})}
-                        required
-                      >
-                        <option value="Available">Available</option>
-                        <option value="Assigned">Assigned</option>
-                        <option value="Maintenance">Maintenance</option>
-                      </select>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button type="submit" className="btn btn-primary">Add Asset</button>
+                    <div className="form-actions">
+                      <button type="submit" className="submit-button">
+                        {editingAsset ? 'Update Asset' : 'Add Asset'}
+                      </button>
                       <button
                         type="button"
-                        onClick={() => setShowAssetForm(false)}
-                        className="btn btn-secondary"
+                        onClick={() => {
+                          setShowAssetForm(false);
+                          setEditingAsset(null);
+                          setAssetForm({ name: '', category: '', serialNumber: '', purchaseDate: '', status: 'Available', imageUrl: '', imageData: '', imageContentType: '' });
+                        }}
+                        className="cancel-button"
                       >
                         Cancel
                       </button>
@@ -285,7 +418,7 @@ const AdminDashboard = () => {
             )}
 
             {/* Assets Table */}
-            <div className="table-container">
+            <div className="assets-table">
               <table className="table">
                 <thead>
                   <tr>
@@ -306,34 +439,37 @@ const AdminDashboard = () => {
                           <img 
                             src={asset.imageData ? `data:${asset.imageContentType};base64,${asset.imageData}` : asset.imageUrl} 
                             alt={asset.name}
-                            className="w-12 h-12 object-cover rounded border"
+                            className="asset-image"
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center">
-                            <span className="text-gray-500 text-xs">No Image</span>
+                          <div className="no-image">
+                            <span>No Image</span>
                           </div>
                         )}
                       </td>
-                      <td className="font-medium">{asset.name}</td>
-                      <td>{asset.category}</td>
-                      <td className="font-mono text-sm">{asset.serialNumber}</td>
-                      <td>{new Date(asset.purchaseDate).toLocaleDateString()}</td>
+                      <td className="asset-name">{asset.name}</td>
+                      <td className="asset-category">{asset.category}</td>
+                      <td className="asset-serial">{asset.serialNumber}</td>
+                      <td className="asset-date">
+                        {new Date(asset.purchaseDate).toLocaleDateString()}
+                      </td>
                       <td>
-                        <span className={`status-badge ${
-                          asset.status === 'Available' ? 'status-available' :
-                          asset.status === 'Assigned' ? 'status-assigned' :
-                          'status-pending'
-                        }`}>
+                        <span className={`status-badge ${asset.status.toLowerCase()}`}>
                           {asset.status}
                         </span>
                       </td>
-                      <td>
+                      <td className="asset-actions">
+                        <button
+                          onClick={() => editAsset(asset)}
+                          className="action-button edit"
+                        >
+                          ✏️ Edit
+                        </button>
                         <button
                           onClick={() => deleteAsset(asset.id)}
-                          className="btn btn-danger"
-                          style={{ padding: '0.5rem 1rem', fontSize: '0.75rem' }}
+                          className="action-button delete"
                         >
-                          Delete
+                          🗑️ Delete
                         </button>
                       </td>
                     </tr>
@@ -346,9 +482,9 @@ const AdminDashboard = () => {
 
         {/* Requests Tab */}
         {activeTab === 'requests' && (
-          <div>
-            <h1 className="text-3xl font-bold mb-6">Asset Requests</h1>
-            <div className="table-container">
+          <div className="requests-section">
+            <h2 className="section-title">Asset Requests</h2>
+            <div className="requests-table">
               <table className="table">
                 <thead>
                   <tr>
@@ -363,37 +499,38 @@ const AdminDashboard = () => {
                 <tbody>
                   {requests.map((request) => (
                     <tr key={request.id}>
-                      <td className="font-medium">{request.userEmail}</td>
-                      <td>{request.assetName}</td>
-                      <td>{request.reason}</td>
-                      <td>{new Date(request.requestDate).toLocaleDateString()}</td>
+                      <td className="user-email">{request.userEmail}</td>
+                      <td className="asset-name">{request.assetName}</td>
+                      <td className="request-reason">{request.reason || 'No reason provided'}</td>
+                      <td className="request-date">
+                        {new Date(request.requestDate).toLocaleDateString()}
+                      </td>
                       <td>
-                        <span className={`status-badge ${
-                          request.status === 'Pending' ? 'status-pending' :
-                          request.status === 'Approved' ? 'status-available' :
-                          'status-assigned'
-                        }`}>
+                        <span className={`status-badge ${request.status.toLowerCase()}`}>
                           {request.status}
                         </span>
                       </td>
-                      <td>
+                      <td className="request-actions">
                         {request.status === 'Pending' && (
-                          <div className="flex space-x-2">
+                          <div className="action-buttons">
                             <button
                               onClick={() => handleRequestAction(request.id, 'approve')}
-                              className="btn btn-success"
-                              style={{ padding: '0.5rem 1rem', fontSize: '0.75rem' }}
+                              className="action-button approve"
                             >
-                              Approve
+                              ✅ Approve
                             </button>
                             <button
                               onClick={() => handleRequestAction(request.id, 'reject')}
-                              className="btn btn-danger"
-                              style={{ padding: '0.5rem 1rem', fontSize: '0.75rem' }}
+                              className="action-button reject"
                             >
-                              Reject
+                              ❌ Reject
                             </button>
                           </div>
+                        )}
+                        {request.status !== 'Pending' && (
+                          <span className="processed-status">
+                            {request.status === 'Approved' ? '✅ Approved' : '❌ Rejected'}
+                          </span>
                         )}
                       </td>
                     </tr>
@@ -403,7 +540,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };
