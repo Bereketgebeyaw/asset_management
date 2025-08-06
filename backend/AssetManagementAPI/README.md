@@ -1,152 +1,214 @@
-# Asset Management API
+# Asset Management System - Backend API
 
-A .NET 9 Web API for managing company assets with JWT authentication and PostgreSQL database.
+A robust .NET 8 Web API for managing company assets, user authentication, and asset requests.
 
-## Features
+## 🏗️ Architecture
 
-- **Authentication**: JWT-based authentication with user registration and login
-- **User Roles**: Admin and User roles with different permissions
-- **Asset Management**: CRUD operations for company assets (Admin only)
-- **Asset Requests**: Users can request assets, admins can approve/reject
-- **Database**: PostgreSQL with Entity Framework Core migrations
-
-## Prerequisites
-
-- .NET 9 SDK
-- PostgreSQL (running on port 5433)
-- Database named `assetmanagement`
-
-## Setup Instructions
-
-### 1. Database Setup
-
-Make sure PostgreSQL is running and create the database:
-
-```sql
-CREATE DATABASE assetmanagement;
+```
+AssetManagementAPI/
+├── Controllers/           # API Controllers
+├── Data/                 # Database context and configurations
+├── DTOs/                 # Data Transfer Objects
+├── Models/               # Entity models
+├── Services/             # Business logic services
+├── Middleware/           # Custom middleware
+├── Configuration/        # App settings and configurations
+├── Seeds/                # Database seeding
+├── Migrations/           # Entity Framework migrations
+└── wwwroot/             # Static files
 ```
 
-### 2. Configuration
+## 🚀 Quick Start
 
-Copy the example environment file and update the values:
+### Prerequisites
 
-```bash
-cp .env.example .env
-```
+- .NET 8 SDK
+- PostgreSQL 12+
+- Visual Studio 2022 or VS Code
 
-Update the `.env` file with your database credentials and other settings.
+### Installation
 
-### 3. Install Dependencies
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd asset-management-system/backend/AssetManagementAPI
+   ```
 
-```bash
-dotnet restore
-```
+2. **Install dependencies**
+   ```bash
+   dotnet restore
+   ```
 
-### 4. Run Migrations
+3. **Configure database**
+   - Update `appsettings.json` with your PostgreSQL connection string
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Host=localhost;Database=AssetManagement;Username=your_username;Password=your_password"
+     }
+   }
+   ```
 
-```bash
-dotnet ef database update
-```
+4. **Run migrations**
+   ```bash
+   dotnet ef database update
+   ```
 
-### 5. Run the Application
+5. **Seed the database**
+   ```bash
+   dotnet run --seed
+   ```
 
-```bash
-dotnet run
-```
+6. **Start the application**
+   ```bash
+   dotnet run
+   ```
 
-The API will be available at `http://localhost:5000`
+The API will be available at `https://localhost:7124` (or `http://localhost:5124`)
 
-## API Endpoints
+## 📋 API Endpoints
 
 ### Authentication
-
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
 
 ### Assets (Admin Only)
-
 - `GET /api/assets` - Get all assets
-- `GET /api/assets/available` - Get available assets
-- `GET /api/assets/{id}` - Get asset by ID
 - `POST /api/assets` - Create new asset
+- `GET /api/assets/{id}` - Get asset by ID
 - `PUT /api/assets/{id}` - Update asset
 - `DELETE /api/assets/{id}` - Delete asset
+- `GET /api/assets/available` - Get available assets
 
 ### Asset Requests
-
-- `GET /api/assetrequests` - Get all requests (Admin only)
+- `GET /api/assetrequests` - Get all requests (Admin)
+- `POST /api/assetrequests` - Create request (User)
 - `GET /api/assetrequests/my-requests` - Get user's requests
-- `GET /api/assetrequests/{id}` - Get request by ID
-- `POST /api/assetrequests` - Create asset request
-- `PUT /api/assetrequests/{id}/process` - Process request (Admin only)
+- `PUT /api/assetrequests/{id}/process` - Process request (Admin)
 
-## Demo Credentials
+## 🔐 Authentication
 
-### Admin User
+The API uses JWT-based authentication. Include the JWT token in the Authorization header:
 
-- Email: `admin@company.com`
-- Password: `admin123`
-
-### Regular User
-
-- Email: `user@company.com`
-- Password: `user123`
-
-## Database Schema
-
-The application uses Entity Framework Core with the following entities:
-
-- **Users**: User accounts with email, password hash, and role
-- **Assets**: Company assets with name, category, serial number, and status
-- **AssetRequests**: Asset requests with user, asset, status, and processing info
-
-## Environment Variables
-
-The application supports the following environment variables:
-
-- `DB_HOST`: Database host (default: localhost)
-- `DB_PORT`: Database port (default: 5433)
-- `DB_NAME`: Database name (default: assetmanagement)
-- `DB_USERNAME`: Database username (default: postgres)
-- `DB_PASSWORD`: Database password (default: postgres)
-- `JWT_SECRET_KEY`: JWT secret key
-- `JWT_ISSUER`: JWT issuer
-- `JWT_AUDIENCE`: JWT audience
-- `JWT_EXPIRATION_HOURS`: JWT expiration hours
-- `API_PORT`: API port (default: 5000)
-- `FRONTEND_URL`: Frontend URL for CORS
-
-## Development
-
-### Running in Development Mode
-
-```bash
-dotnet run --environment Development
+```
+Authorization: Bearer <your-jwt-token>
 ```
 
-### Running Tests
+## 🗄️ Database Schema
+
+### Users
+- `Id` (Primary Key)
+- `Email` (Unique)
+- `PasswordHash`
+- `Role` (User/Admin)
+- `CreatedAt`
+- `UpdatedAt`
+
+### Assets
+- `Id` (Primary Key)
+- `Name`
+- `Category`
+- `SerialNumber` (Unique)
+- `PurchaseDate`
+- `Status` (Available/Assigned)
+- `ImageUrl` (Optional)
+- `CreatedAt`
+- `UpdatedAt`
+
+### AssetRequests
+- `Id` (Primary Key)
+- `UserId` (Foreign Key)
+- `AssetId` (Foreign Key)
+- `Reason`
+- `Status` (Pending/Approved/Rejected)
+- `RequestedAt`
+- `ProcessedAt`
+- `ProcessedBy` (Admin ID)
+
+## 🌱 Seed Data
+
+The application comes with pre-loaded data:
+
+### Admin User
+- Email: `admin@company.com`
+- Password: `admin123`
+- Role: Admin
+
+### Regular User
+- Email: `user@company.com`
+- Password: `user123`
+- Role: User
+
+### Sample Assets
+- 5 pre-loaded assets across different categories (Laptop, Phone, Monitor, etc.)
+
+## 🔧 Configuration
+
+### Environment Variables
+
+- `ASPNETCORE_ENVIRONMENT` - Environment (Development/Production)
+- `JWT_SECRET` - JWT signing secret
+- `JWT_ISSUER` - JWT issuer
+- `JWT_AUDIENCE` - JWT audience
+
+### App Settings
+
+Key configuration options in `appsettings.json`:
+
+```json
+{
+  "JwtSettings": {
+    "Secret": "your-secret-key",
+    "Issuer": "AssetManagement",
+    "Audience": "AssetManagementUsers",
+    "ExpirationHours": 24
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "your-connection-string"
+  }
+}
+```
+
+## 🧪 Testing
+
+Run the test suite:
 
 ```bash
 dotnet test
 ```
 
-### Database Migrations
+## 📦 Deployment
 
-To create a new migration:
+### Docker
 
-```bash
-dotnet ef migrations add MigrationName
-```
+1. Build the image:
+   ```bash
+   docker build -t asset-management-api .
+   ```
 
-To apply migrations:
+2. Run the container:
+   ```bash
+   docker run -p 5124:5124 asset-management-api
+   ```
 
-```bash
-dotnet ef database update
-```
+### Production
 
-## Security Notes
+1. Publish the application:
+   ```bash
+   dotnet publish -c Release -o ./publish
+   ```
 
-- Passwords are hashed using BCrypt
-- JWT tokens are used for authentication
-- Role-based authorization is implemented
-- CORS is configured for the frontend application
+2. Deploy to your preferred hosting platform
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
