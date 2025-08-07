@@ -2,7 +2,7 @@
 
 A full-stack web application for managing company assets with user authentication, role-based access control, and a modern responsive interface.
 
-##  Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
@@ -10,14 +10,16 @@ A full-stack web application for managing company assets with user authenticatio
 - **Frontend**: Node.js 18+ and npm
 - **Database**: PostgreSQL 12+
 
-### 1. Clone the Repository
+### Option 1: Manual Setup
+
+#### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd asset-management-system
 ```
 
-### 2. Backend Setup
+#### 2. Backend Setup
 
 ```bash
 # Navigate to backend directory
@@ -46,7 +48,7 @@ dotnet run
 
 **Backend will be running at:** http://localhost:5124
 
-### 3. Frontend Setup
+#### 3. Frontend Setup
 
 ```bash
 # Navigate to frontend directory
@@ -64,7 +66,35 @@ npm run dev
 
 **Frontend will be running at:** http://localhost:5173
 
-##  Demo Credentials
+### Option 2: Docker Compose (Recommended)
+
+If you have Docker and Docker Compose installed, you can start the entire application with one command:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd asset-management-system
+
+# Start all services (database, backend, frontend)
+docker-compose up
+
+# Or run in background
+docker-compose up -d
+```
+
+**This will start:**
+
+- **Database**: PostgreSQL on port 5432
+- **Backend**: .NET API on http://localhost:5124
+- **Frontend**: React app on http://localhost:5173
+
+**To stop the application:**
+
+```bash
+docker-compose down
+```
+
+## Demo Credentials
 
 ### Admin User
 
@@ -80,28 +110,27 @@ npm run dev
 
 ## 📋 Features
 
-###  Authentication & Authorization
+### Authentication & Authorization
 
 - User registration and login
 - JWT-based authentication
 - Role-based access control (Admin/User)
 
-###  User Features
+### User Features
 
 - Browse available assets
 - Request assets with reasons
 - Track request status and history
 - View assigned assets
 
-###  Admin Features
+### Admin Features
 
 - Full asset management (CRUD operations)
 - Process asset requests (approve/reject)
 - View all users and their requests
 - Dashboard with analytics
 
-
-##  Database
+## Database
 
 The application uses PostgreSQL with Entity Framework Core. The database will be automatically created when you run the migrations.
 
@@ -124,4 +153,3 @@ The application uses PostgreSQL with Entity Framework Core. The database will be
 - 5 pre-loaded assets across different categories
 - Admin and user accounts (see demo credentials above)
 - Sample asset requests
-
