@@ -31,7 +31,7 @@ dotnet restore
 # Install Entity Framework tools (if not already installed)
 dotnet tool install --global dotnet-ef
 
-# Add .NET tools to PATH 
+# Add .NET tools to PATH (IMPORTANT: Run this in your terminal)
 export PATH="$HOME/.dotnet/tools:$PATH"
 
 # Update database credentials in appsettings.json
@@ -126,13 +126,18 @@ docker-compose down
    dotnet tool install --global dotnet-ef
    ```
 
-4. **Add .NET Tools to PATH**
+4. **Add .NET Tools to PATH (CRITICAL STEP)**
 
    ```bash
    export PATH="$HOME/.dotnet/tools:$PATH"
    ```
 
-   **Note**: Add this line to your shell profile (`.zshrc`, `.bash_profile`, etc.) to make it permanent.
+   **Note**: You must run this command in your terminal before running migrations. To make it permanent, add this line to your shell profile:
+
+   ```bash
+   echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
 
 5. **Run Migrations**
 
@@ -151,7 +156,7 @@ docker-compose down
 
 #### Entity Framework Tools Not Found
 
-If you get an error like "dotnet-ef does not exist", follow these steps:
+If you get an error like "dotnet-ef does not exist", follow these steps **in order**:
 
 1. **Check if tools are installed**:
 
@@ -159,7 +164,7 @@ If you get an error like "dotnet-ef does not exist", follow these steps:
    dotnet tool list --global
    ```
 
-2. **Add tools to PATH**:
+2. **Add tools to PATH** (run this in your terminal):
 
    ```bash
    export PATH="$HOME/.dotnet/tools:$PATH"
@@ -172,11 +177,37 @@ If you get an error like "dotnet-ef does not exist", follow these steps:
    ```
 
 4. **If still not working, reinstall**:
+
    ```bash
    dotnet tool uninstall --global dotnet-ef
    dotnet tool install --global dotnet-ef
    export PATH="$HOME/.dotnet/tools:$PATH"
    ```
+
+5. **Make it permanent** (optional but recommended):
+
+   ```bash
+   echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
+#### Port Already in Use
+
+If you get "address already in use" error:
+
+1. **Find the process using the port**:
+
+   ```bash
+   lsof -ti:5124
+   ```
+
+2. **Kill the process**:
+
+   ```bash
+   kill -9 <PID>
+   ```
+
+3. **Or use a different port** by updating `launchSettings.json`
 
 ### Database Tables
 
