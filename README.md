@@ -28,6 +28,12 @@ cd backend/AssetManagementAPI
 # Restore dependencies
 dotnet restore
 
+# Install Entity Framework tools (if not already installed)
+dotnet tool install --global dotnet-ef
+
+# Add .NET tools to PATH 
+export PATH="$HOME/.dotnet/tools:$PATH"
+
 # Update database credentials in appsettings.json
 # Replace the Database section with your PostgreSQL credentials:
 # You'll need to create a PostgreSQL database and user, or use existing credentials
@@ -39,8 +45,11 @@ dotnet restore
 #   "Password": "your_password"
 # }
 
-# Run database migrations
+# Run database migrations to create tables
 dotnet ef database update
+
+# Seed the database with initial data (admin user, regular user, sample assets)
+dotnet run --seed
 
 # Start the backend server
 dotnet run
@@ -93,6 +102,97 @@ docker-compose up -d
 ```bash
 docker-compose down
 ```
+
+## Database Setup
+
+### Manual Database Setup
+
+1. **Create PostgreSQL Database**
+
+   ```sql
+   CREATE DATABASE assetmanagement;
+   ```
+
+2. **Create User (Optional)**
+
+   ```sql
+   CREATE USER your_username WITH PASSWORD 'your_password';
+   GRANT ALL PRIVILEGES ON DATABASE assetmanagement TO your_username;
+   ```
+
+3. **Install Entity Framework Tools**
+
+   ```bash
+   dotnet tool install --global dotnet-ef
+   ```
+
+4. **Add .NET Tools to PATH**
+
+   ```bash
+   export PATH="$HOME/.dotnet/tools:$PATH"
+   ```
+
+   **Note**: Add this line to your shell profile (`.zshrc`, `.bash_profile`, etc.) to make it permanent.
+
+5. **Run Migrations**
+
+   ```bash
+   cd backend/AssetManagementAPI
+   dotnet ef database update
+   ```
+
+6. **Seed Database**
+
+   ```bash
+   dotnet run --seed
+   ```
+
+### Troubleshooting
+
+#### Entity Framework Tools Not Found
+
+If you get an error like "dotnet-ef does not exist", follow these steps:
+
+1. **Check if tools are installed**:
+
+   ```bash
+   dotnet tool list --global
+   ```
+
+2. **Add tools to PATH**:
+
+   ```bash
+   export PATH="$HOME/.dotnet/tools:$PATH"
+   ```
+
+3. **Verify installation**:
+
+   ```bash
+   which dotnet-ef
+   ```
+
+4. **If still not working, reinstall**:
+   ```bash
+   dotnet tool uninstall --global dotnet-ef
+   dotnet tool install --global dotnet-ef
+   export PATH="$HOME/.dotnet/tools:$PATH"
+   ```
+
+### Database Tables
+
+The following tables will be created automatically:
+
+- **Users**: User accounts and authentication
+- **Assets**: Company assets (laptops, phones, monitors, etc.)
+- **AssetRequests**: Asset request history and status
+
+### Sample Data
+
+The seeding process creates:
+
+- **Admin User**: `admin@company.com` / `admin123`
+- **Regular User**: `user@company.com` / `user123`
+- **Sample Assets**: 5 pre-loaded assets across different categories
 
 ## Demo Credentials
 
