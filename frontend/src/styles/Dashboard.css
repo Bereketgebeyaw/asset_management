@@ -36,6 +36,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;
+  padding-top: 120px; /* Account for fixed header height */
   position: relative;
   z-index: 5;
 }
@@ -344,6 +345,7 @@
 @media (max-width: 768px) {
   .dashboard-content {
     padding: 1rem;
+    padding-top: 100px; /* Reduced padding for mobile header */
   }
   
   .content-card {
@@ -412,6 +414,7 @@
 @media (min-width: 769px) and (max-width: 1024px) {
   .dashboard-content {
     padding: 1.5rem;
+    padding-top: 120px; /* Account for fixed header */
   }
   
   .content-card {
@@ -435,6 +438,7 @@
 @media (min-width: 1025px) {
   .dashboard-content {
     padding: 2rem;
+    padding-top: 120px; /* Account for fixed header */
   }
   
   .content-card {
