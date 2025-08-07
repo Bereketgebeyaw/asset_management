@@ -7,7 +7,7 @@ A full-stack web application for managing company assets with user authenticatio
 ### Prerequisites
 
 - **Backend**: .NET 8 SDK
-- **Frontend**: Node.js 18+ and npm
+- **Frontend**:Node v20.17.0 and npm
 - **Database**: PostgreSQL 12+
 
 ### Option 1: Manual Setup
