@@ -132,13 +132,7 @@ const Register = () => {
             </p>
           </div>
 
-          <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gray-50 rounded-lg">
-            <h3 className="font-bold mb-2 text-sm sm:text-base">Demo Credentials:</h3>
-            <div className="text-xs sm:text-sm space-y-1">
-              <p><strong>Admin:</strong> admin@company.com / admin123</p>
-              <p><strong>User:</strong> user@company.com / user123</p>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
