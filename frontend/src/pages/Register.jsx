@@ -7,13 +7,15 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const { registerOnly } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -28,8 +30,12 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await register(email, password);
-      navigate('/dashboard');
+      await registerOnly(email, password);
+      setSuccess('Account created successfully! You will be redirected to the login page in 2 seconds.');
+      // Redirect to login page after 2 seconds
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {
@@ -49,6 +55,12 @@ const Register = () => {
           {error && (
             <div className="alert alert-error">
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="alert alert-success">
+              {success}
             </div>
           )}
 

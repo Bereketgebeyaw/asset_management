@@ -93,6 +93,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerOnly = async (email, password) => {
+    try {
+      const response = await axios.post('/auth/register', { email, password });
+      // Don't automatically log in the user, just return success
+      return { success: true };
+    } catch (error) {
+      console.error('Register error:', error);
+      throw error;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -107,6 +118,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     register,
+    registerOnly,
     logout
   };
 

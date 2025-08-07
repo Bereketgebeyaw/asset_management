@@ -23,7 +23,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
 
   const isRequesting = requestingId === asset.id || isSubmitting;
 
-  // Get category icon and color
+  
   const getCategoryInfo = (category) => {
     switch (category.toLowerCase()) {
       case 'laptop':
@@ -47,7 +47,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
 
   return (
     <div className={`asset-card ${isAssigned ? 'assigned' : ''}`} style={{ '--category-color': categoryInfo.color }}>
-      {/* Card Header with Gradient */}
+      
       <div className="card-header" style={{ background: categoryInfo.gradient }}>
         <div className="header-content">
           <div className="category-badge">
@@ -61,7 +61,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
         </div>
       </div>
 
-      {/* Asset Image Section */}
+     
       <div className="image-section">
         {asset.imageData ? (
           <div className="image-container">
@@ -90,7 +90,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
         )}
       </div>
 
-      {/* Asset Details */}
+      
       <div className="details-section">
         <div className="asset-info">
           <h3 className="asset-title">{asset.name}</h3>
@@ -112,7 +112,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
           </div>
         </div>
 
-        {/* Request Section - Only show for available assets */}
+        
         {!isAssigned && (
           <div className="request-section">
             {!showRequestForm ? (
@@ -177,7 +177,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
           </div>
         )}
 
-        {/* Assigned Asset Info */}
+        
         {isAssigned && (
           <div className="assigned-info">
             <div className="assigned-badge">
@@ -191,7 +191,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
         )}
       </div>
 
-      {/* Decorative Elements */}
+      
       <div className="card-decoration">
         <div className="decoration-circle"></div>
         <div className="decoration-line"></div>

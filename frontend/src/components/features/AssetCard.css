@@ -7,7 +7,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   max-width: 400px; /* Increased from 320px */
-  min-height: 350px; /* Increased from 280px */
+  min-height: 450px; /* Increased from 400px to accommodate larger images */
   display: flex;
   flex-direction: column;
 }
@@ -137,8 +137,11 @@
 .image-section {
   flex: 1;
   position: relative;
-  min-height: 250px; /* Increased from 200px */
+  min-height: 350px; /* Increased from 300px for better proportion */
   background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .image-container {
@@ -146,13 +149,24 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px; /* Ensure minimum height for the container */
+  padding: 0.5rem; /* Reduced from 1rem to give more space to images */
+  background: #f8fafc; /* Add background color to match the section */
 }
 
 .asset-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  /* Removed transition and hover effects */
+  object-fit: contain; /* Keep contain for better proportion */
+  max-width: 100%; /* Allow full width */
+  max-height: 100%; /* Allow full height */
+  border-radius: 8px; /* Add border radius for consistency */
+  background: #ffffff; /* Add background color for images with transparency */
+  min-height: 200px; /* Ensure minimum height for the image */
+  min-width: 200px; /* Ensure minimum width for the image */
 }
 
 /* Removed hover effect for image */
@@ -172,6 +186,7 @@
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  border-radius: 8px; /* Add border radius to match the container */
 }
 
 /* Removed hover effect for overlay */
@@ -206,6 +221,7 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 0.5rem; /* Match the image container padding */
 }
 
 .placeholder-container::before {
@@ -228,24 +244,30 @@
   text-align: center;
   color: #ffffff;
   z-index: 1;
-  padding: 1rem;
+  padding: 0; /* Remove padding since container now has padding */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .placeholder-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 4rem; /* Increased from 3rem for better proportion */
+  margin-bottom: 1rem; /* Increased from 0.75rem */
   display: block;
 }
 
 .placeholder-title {
-  margin: 0 0 0.25rem 0;
-  font-size: 1rem;
+  margin: 0 0 0.5rem 0; /* Increased from 0.25rem */
+  font-size: 1.125rem; /* Increased from 1rem */
   font-weight: 700;
 }
 
 .placeholder-subtitle {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.875rem; /* Increased from 0.75rem */
   opacity: 0.9;
 }
 
@@ -617,7 +639,24 @@
 @media (max-width: 768px) {
   .asset-card {
     max-width: 100%;
-    min-height: 300px; /* Increased from 240px */
+    min-height: 400px; /* Increased from 350px for better mobile experience */
+  }
+
+  .image-section {
+    min-height: 300px; /* Increased from 250px for mobile */
+  }
+
+  .image-container {
+    padding: 0.25rem; /* Further reduced padding for mobile */
+  }
+
+  .asset-image {
+    max-width: 100%; /* Full width on mobile for better visibility */
+    max-height: 100%; /* Full height on mobile for better visibility */
+  }
+
+  .placeholder-icon {
+    font-size: 3rem; /* Slightly smaller on mobile */
   }
 
   .details-section {
