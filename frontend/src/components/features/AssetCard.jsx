@@ -94,7 +94,8 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
       <div className="details-section">
         <div className="asset-info">
           <h3 className="asset-title">{asset.name}</h3>
-          <div className="asset-meta">
+          {/* Hide meta information on mobile */}
+          <div className="asset-meta mobile-hidden">
             <div className="meta-item">
               <span className="meta-label">Serial Number</span>
               <span className="meta-value">{asset.serialNumber}</span>
@@ -184,7 +185,8 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
               <span className="assigned-icon">✅</span>
               <span className="assigned-text">Assigned to You</span>
             </div>
-            <p className="assigned-description">
+            {/* Hide description on mobile */}
+            <p className="assigned-description mobile-hidden">
               This asset has been assigned to you and is ready for use.
             </p>
           </div>

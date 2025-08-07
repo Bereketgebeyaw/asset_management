@@ -100,8 +100,6 @@ const UserRequests = () => {
 
   return (
     <div className="user-requests-container">
-     
-
       {requests.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📝</div>

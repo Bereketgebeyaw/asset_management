@@ -207,7 +207,7 @@ const AdminDashboard = () => {
             </div>
             <button onClick={logout} className="logout-button">
               <span className="logout-icon">🚪</span>
-              <span>Logout</span>
+              <span className="logout-text">Logout</span>
             </button>
           </div>
         </div>
@@ -300,7 +300,7 @@ const AdminDashboard = () => {
                 className="add-asset-button"
               >
                 <span className="button-icon">➕</span>
-                <span>Add New Asset</span>
+                <span className="button-text">Add New Asset</span>
               </button>
             </div>
 
@@ -436,65 +436,67 @@ const AdminDashboard = () => {
 
             {/* Assets Table */}
             <div className="assets-table">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Serial Number</th>
-                    <th>Purchase Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {assets.map((asset) => (
-                    <tr key={asset.id}>
-                      <td>
-                        {(asset.imageUrl || asset.imageData) ? (
-                          <img 
-                            src={asset.imageData ? `data:${asset.imageContentType};base64,${asset.imageData}` : asset.imageUrl} 
-                            alt={asset.name}
-                            className="asset-image"
-                          />
-                        ) : (
-                          <div className="no-image">
-                            <span>No Image</span>
-                          </div>
-                        )}
-                      </td>
-                      <td className="asset-name">{asset.name}</td>
-                      <td className="asset-category">{asset.category}</td>
-                      <td className="asset-serial">{asset.serialNumber}</td>
-                      <td className="asset-date">
-                        {new Date(asset.purchaseDate).toLocaleDateString()}
-                      </td>
-                      <td>
-                        <span className={`status-badge ${asset.status.toLowerCase()}`}>
-                          {asset.status}
-                        </span>
-                      </td>
-                      <td className="asset-actions">
-                        <button
-                          onClick={() => editAsset(asset)}
-                          className={`action-button edit ${(asset.status === 'Approved' || asset.status === 'Assigned') ? 'disabled' : ''}`}
-                          disabled={asset.status === 'Approved' || asset.status === 'Assigned'}
-                          title={asset.status === 'Approved' || asset.status === 'Assigned' ? 'Cannot edit approved or assigned assets' : 'Edit asset'}
-                        >
-                          ✏️ Edit
-                        </button>
-                        <button
-                          onClick={() => deleteAsset(asset.id)}
-                          className="action-button delete"
-                        >
-                          🗑️ Delete
-                        </button>
-                      </td>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Category</th>
+                      <th>Serial Number</th>
+                      <th>Purchase Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {assets.map((asset) => (
+                      <tr key={asset.id}>
+                        <td>
+                          {(asset.imageUrl || asset.imageData) ? (
+                            <img 
+                              src={asset.imageData ? `data:${asset.imageContentType};base64,${asset.imageData}` : asset.imageUrl} 
+                              alt={asset.name}
+                              className="asset-image"
+                            />
+                          ) : (
+                            <div className="no-image">
+                              <span>No Image</span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="asset-name">{asset.name}</td>
+                        <td className="asset-category">{asset.category}</td>
+                        <td className="asset-serial">{asset.serialNumber}</td>
+                        <td className="asset-date">
+                          {new Date(asset.purchaseDate).toLocaleDateString()}
+                        </td>
+                        <td>
+                          <span className={`status-badge ${asset.status.toLowerCase()}`}>
+                            {asset.status}
+                          </span>
+                        </td>
+                        <td className="asset-actions">
+                          <button
+                            onClick={() => editAsset(asset)}
+                            className={`action-button edit ${(asset.status === 'Approved' || asset.status === 'Assigned') ? 'disabled' : ''}`}
+                            disabled={asset.status === 'Approved' || asset.status === 'Assigned'}
+                            title={asset.status === 'Approved' || asset.status === 'Assigned' ? 'Cannot edit approved or assigned assets' : 'Edit asset'}
+                          >
+                            ✏️ Edit
+                          </button>
+                          <button
+                            onClick={() => deleteAsset(asset.id)}
+                            className="action-button delete"
+                          >
+                            🗑️ Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
@@ -504,58 +506,60 @@ const AdminDashboard = () => {
           <div className="requests-section">
             <h2 className="section-title">Asset Requests</h2>
             <div className="requests-table">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Asset</th>
-                    <th>Reason</th>
-                    <th>Request Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {requests.map((request) => (
-                    <tr key={request.id}>
-                      <td className="user-email">{request.userEmail}</td>
-                      <td className="asset-name">{request.assetName}</td>
-                      <td className="request-reason">{request.reason || 'No reason provided'}</td>
-                      <td className="request-date">
-                        {new Date(request.requestDate).toLocaleDateString()}
-                      </td>
-                      <td>
-                        <span className={`status-badge ${request.status.toLowerCase()}`}>
-                          {request.status}
-                        </span>
-                      </td>
-                      <td className="request-actions">
-                        {request.status === 'Pending' && (
-                          <div className="action-buttons">
-                            <button
-                              onClick={() => handleRequestAction(request.id, 'approve')}
-                              className="action-button approve"
-                            >
-                              ✅ Approve
-                            </button>
-                            <button
-                              onClick={() => handleRequestAction(request.id, 'reject')}
-                              className="action-button reject"
-                            >
-                              ❌ Reject
-                            </button>
-                          </div>
-                        )}
-                        {request.status !== 'Pending' && (
-                          <span className="processed-status">
-                            {request.status === 'Approved' ? '✅ Approved' : '❌ Rejected'}
-                          </span>
-                        )}
-                      </td>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Asset</th>
+                      <th>Reason</th>
+                      <th>Request Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {requests.map((request) => (
+                      <tr key={request.id}>
+                        <td className="user-email">{request.userEmail}</td>
+                        <td className="asset-name">{request.assetName}</td>
+                        <td className="request-reason">{request.reason || 'No reason provided'}</td>
+                        <td className="request-date">
+                          {new Date(request.requestDate).toLocaleDateString()}
+                        </td>
+                        <td>
+                          <span className={`status-badge ${request.status.toLowerCase()}`}>
+                            {request.status}
+                          </span>
+                        </td>
+                        <td className="request-actions">
+                          {request.status === 'Pending' && (
+                            <div className="action-buttons">
+                              <button
+                                onClick={() => handleRequestAction(request.id, 'approve')}
+                                className="action-button approve"
+                              >
+                                ✅ Approve
+                              </button>
+                              <button
+                                onClick={() => handleRequestAction(request.id, 'reject')}
+                                className="action-button reject"
+                              >
+                                ❌ Reject
+                              </button>
+                            </div>
+                          )}
+                          {request.status !== 'Pending' && (
+                            <span className="processed-status">
+                              {request.status === 'Approved' ? '✅ Approved' : '❌ Rejected'}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}

@@ -35,7 +35,7 @@
 .dashboard-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   position: relative;
   z-index: 5;
 }
@@ -43,7 +43,7 @@
 .content-card {
   background: #ffffff;
   border-radius: 24px;
-  padding: 3rem;
+  padding: 2rem;
   box-shadow: 
     0 25px 50px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(0, 0, 0, 0.05);
@@ -78,13 +78,13 @@
 
 .page-title {
   text-align: center;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2rem;
   position: relative;
 }
 
 .page-title::before {
   content: '🎯';
-  font-size: 3rem;
+  font-size: 2.5rem;
   display: block;
   margin-bottom: 1rem;
   animation: bounce 2s ease-in-out infinite;
@@ -93,10 +93,10 @@
 .page-title::after {
   content: '';
   position: absolute;
-  bottom: -1.5rem;
+  bottom: -1rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 100px;
+  width: 80px;
   height: 4px;
   background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   border-radius: 2px;
@@ -104,7 +104,7 @@
 }
 
 .page-title h1 {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   font-weight: 800;
   margin: 0 0 1rem 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
@@ -117,7 +117,7 @@
 }
 
 .page-title p {
-  font-size: 1.375rem;
+  font-size: 1.125rem;
   color: #6b7280;
   margin: 0;
   font-weight: 500;
@@ -129,15 +129,15 @@
 
 .assets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Increased from 350px */
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
   margin-top: 2rem;
   padding: 1rem 0;
 }
 
 .empty-state {
   text-align: center;
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   color: #6b7280;
   animation: fadeInUp 0.8s ease-out 0.6s both;
   background: rgba(102, 126, 234, 0.05);
@@ -162,14 +162,14 @@
 }
 
 .empty-state-icon {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 1.5rem;
   animation: float 3s ease-in-out infinite;
   display: block;
 }
 
 .empty-state h3 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #374151;
   margin: 0 0 1rem 0;
@@ -180,7 +180,7 @@
 }
 
 .empty-state p {
-  font-size: 1.125rem;
+  font-size: 1rem;
   margin: 0;
   font-weight: 500;
   color: #6b7280;
@@ -238,7 +238,7 @@
     width: 0;
   }
   to {
-    width: 100px;
+    width: 80px;
   }
 }
 
@@ -340,22 +340,6 @@
   position: relative;
 }
 
-/* Responsive Tab Navigation */
-@media (max-width: 768px) {
-  .tab-navigation {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .tab-button {
-    padding: 0.75rem 1rem;
-  }
-
-  .tab-text {
-    font-size: 0.8rem;
-  }
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-content {
@@ -363,45 +347,166 @@
   }
   
   .content-card {
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 20px;
   }
   
   .assets-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
     margin-top: 1.5rem;
   }
   
   .page-title h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .page-title p {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
   
   .page-title::before {
+    font-size: 2rem;
+  }
+  
+  .page-title::after {
+    width: 60px;
+  }
+  
+  .empty-state {
+    padding: 3rem 1.5rem;
+  }
+  
+  .empty-state-icon {
     font-size: 2.5rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.125rem;
+  }
+  
+  .empty-state p {
+    font-size: 0.875rem;
+  }
+  
+  /* Tab Navigation Mobile */
+  .tab-navigation {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .tab-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .tab-text {
+    font-size: 0.8rem;
+  }
+  
+  .tab-icon {
+    font-size: 1rem;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dashboard-content {
+    padding: 1.5rem;
+  }
+  
+  .content-card {
+    padding: 2.5rem;
+  }
+  
+  .assets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.75rem;
+  }
+  
+  .page-title h1 {
+    font-size: 3rem;
+  }
+  
+  .page-title p {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .dashboard-content {
+    padding: 2rem;
+  }
+  
+  .content-card {
+    padding: 3rem;
+  }
+  
   .assets-grid {
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+  
+  .page-title h1 {
+    font-size: 3.5rem;
+  }
+  
+  .page-title p {
+    font-size: 1.375rem;
+  }
+  
+  .page-title::before {
+    font-size: 3rem;
+  }
+  
+  .page-title::after {
+    width: 100px;
   }
 }
 
 @media (max-width: 480px) {
-  .page-title h1 {
-    font-size: 2rem;
+  .dashboard-content {
+    padding: 0.75rem;
   }
   
   .content-card {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  
+  .page-title h1 {
+    font-size: 1.75rem;
+  }
+  
+  .page-title p {
+    font-size: 0.875rem;
   }
   
   .page-title::before {
+    font-size: 1.75rem;
+  }
+  
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+  
+  .empty-state-icon {
     font-size: 2rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1rem;
+  }
+  
+  .empty-state p {
+    font-size: 0.8rem;
+  }
+  
+  .tab-button {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.75rem;
+  }
+  
+  .tab-icon {
+    font-size: 0.875rem;
   }
 }
