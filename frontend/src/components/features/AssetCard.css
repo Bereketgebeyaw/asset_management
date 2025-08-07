@@ -6,17 +6,18 @@
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  max-width: 320px;
-  min-height: 280px;
+  max-width: 400px; /* Increased from 320px */
+  min-height: 350px; /* Increased from 280px */
   display: flex;
   flex-direction: column;
 }
 
-.asset-card:hover {
+/* Removed hover effect for card */
+/* .asset-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   border-color: #d1d5db;
-}
+} */
 
 /* Assigned Asset Styles */
 .asset-card.assigned {
@@ -24,9 +25,10 @@
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
 }
 
-.asset-card.assigned:hover {
+/* Removed hover effect for assigned cards */
+/* .asset-card.assigned:hover {
   box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-}
+} */
 
 .assigned-info {
   margin-top: 1rem;
@@ -135,7 +137,7 @@
 .image-section {
   flex: 1;
   position: relative;
-  min-height: 120px;
+  min-height: 250px; /* Increased from 200px */
   background: #f8fafc;
 }
 
@@ -150,12 +152,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  /* Removed transition and hover effects */
 }
 
-.asset-card:hover .asset-image {
+/* Removed hover effect for image */
+/* .asset-card:hover .asset-image {
   transform: scale(1.05);
-}
+} */
 
 .image-overlay {
   position: absolute;
@@ -171,9 +174,10 @@
   transition: opacity 0.3s ease;
 }
 
-.asset-card:hover .image-overlay {
+/* Removed hover effect for overlay */
+/* .asset-card:hover .image-overlay {
   opacity: 1;
-}
+} */
 
 .overlay-content {
   text-align: center;
@@ -215,9 +219,10 @@
   transition: left 0.5s ease;
 }
 
-.asset-card:hover .placeholder-container::before {
+/* Removed hover effect for placeholder */
+/* .asset-card:hover .placeholder-container::before {
   left: 100%;
-}
+} */
 
 .placeholder-content {
   text-align: center;
@@ -612,7 +617,7 @@
 @media (max-width: 768px) {
   .asset-card {
     max-width: 100%;
-    min-height: 240px;
+    min-height: 300px; /* Increased from 240px */
   }
 
   .details-section {

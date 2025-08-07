@@ -24,19 +24,7 @@ const AssignedAssets = () => {
 
   return (
     <div className="assigned-assets-container">
-      <div className="assigned-assets-header">
-        <div className="header-content">
-          <div className="header-icon">📦</div>
-          <div className="header-text">
-            <h2>Your Assigned Assets</h2>
-            <p>Assets that have been assigned to you</p>
-          </div>
-        </div>
-        <div className="asset-count">
-          <span className="count-number">{assets.length}</span>
-          <span className="count-label">Assets</span>
-        </div>
-      </div>
+      
 
       {assets.length === 0 ? (
         <div className="empty-state">
