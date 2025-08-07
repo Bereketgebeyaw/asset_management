@@ -27,28 +27,28 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
   const getCategoryInfo = (category) => {
     switch (category.toLowerCase()) {
       case 'laptop':
-        return { icon: '💻', color: '#3b82f6', gradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' };
+        return { icon: '💻', color: '#475569' };
       case 'phone':
-        return { icon: '📱', color: '#10b981', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' };
+        return { icon: '📱', color: '#475569' };
       case 'monitor':
-        return { icon: '🖥️', color: '#8b5cf6', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' };
+        return { icon: '🖥️', color: '#475569' };
       case 'tablet':
-        return { icon: '📱', color: '#f59e0b', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' };
+        return { icon: '📱', color: '#475569' };
       case 'printer':
-        return { icon: '🖨️', color: '#ef4444', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' };
+        return { icon: '🖨️', color: '#475569' };
       case 'scanner':
-        return { icon: '📄', color: '#06b6d4', gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)' };
+        return { icon: '📄', color: '#475569' };
       default:
-        return { icon: '📦', color: '#6b7280', gradient: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)' };
+        return { icon: '📦', color: '#475569' };
     }
   };
 
   const categoryInfo = getCategoryInfo(asset.category);
 
   return (
-    <div className={`asset-card ${isAssigned ? 'assigned' : ''}`} style={{ '--category-color': categoryInfo.color }}>
-      
-      <div className="card-header" style={{ background: categoryInfo.gradient }}>
+    <div className={`asset-card ${isAssigned ? 'assigned' : ''}`}>
+      {/* Card Header - Calm & Neutral */}
+      <div className="card-header">
         <div className="header-content">
           <div className="category-badge">
             <span className="category-icon">{categoryInfo.icon}</span>
@@ -61,7 +61,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
         </div>
       </div>
 
-     
+      {/* Asset Image Section */}
       <div className="image-section">
         {asset.imageData ? (
           <div className="image-container">
@@ -80,7 +80,7 @@ const AssetCard = ({ asset, onRequest, requestingId, isAssigned = false }) => {
             </div>
           </div>
         ) : (
-          <div className="placeholder-container" style={{ background: categoryInfo.gradient }}>
+          <div className="placeholder-container">
             <div className="placeholder-content">
               <div className="placeholder-icon">{categoryInfo.icon}</div>
               <h3 className="placeholder-title">{asset.name}</h3>

@@ -100,19 +100,7 @@ const UserRequests = () => {
 
   return (
     <div className="user-requests-container">
-      <div className="user-requests-header">
-        <div className="header-content">
-          <div className="header-icon">📋</div>
-          <div className="header-text">
-            <h2>Your Asset Requests</h2>
-            <p>Track the status of your asset requests</p>
-          </div>
-        </div>
-        <div className="request-count">
-          <span className="count-number">{requests.length}</span>
-          <span className="count-label">Requests</span>
-        </div>
-      </div>
+     
 
       {requests.length === 0 ? (
         <div className="empty-state">
