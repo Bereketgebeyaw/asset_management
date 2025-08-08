@@ -100,37 +100,55 @@ namespace AssetManagementAPI.Services
 
         public async Task<AssetDto> CreateAssetAsync(CreateAssetDto createAssetDto)
         {
-            var asset = new Asset
+            try
             {
-                Name = createAssetDto.Name,
-                Category = createAssetDto.Category,
-                SerialNumber = createAssetDto.SerialNumber,
-                PurchaseDate = DateTime.SpecifyKind(createAssetDto.PurchaseDate, DateTimeKind.Utc),
-                Status = createAssetDto.Status ?? "Available",
-                ImageUrl = createAssetDto.ImageUrl,
-                ImageData = createAssetDto.ImageData,
-                ImageContentType = createAssetDto.ImageContentType,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+                // Check if serial number already exists
+                var existingAsset = await _context.Assets.FirstOrDefaultAsync(a => a.SerialNumber == createAssetDto.SerialNumber);
+                if (existingAsset != null)
+                {
+                    throw new InvalidOperationException($"Asset with serial number '{createAssetDto.SerialNumber}' already exists.");
+                }
 
-            _context.Assets.Add(asset);
-            await _context.SaveChangesAsync();
+                var asset = new Asset
+                {
+                    Name = createAssetDto.Name,
+                    Category = createAssetDto.Category,
+                    SerialNumber = createAssetDto.SerialNumber,
+                    PurchaseDate = createAssetDto.PurchaseDate?.ToUniversalTime() ?? DateTime.UtcNow,
+                    Status = createAssetDto.Status ?? "Available",
+                    ImageUrl = createAssetDto.ImageUrl,
+                    ImageData = !string.IsNullOrEmpty(createAssetDto.ImageData) ? Convert.FromBase64String(createAssetDto.ImageData) : null,
+                    ImageContentType = createAssetDto.ImageContentType,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
 
-            return new AssetDto
+                _context.Assets.Add(asset);
+                await _context.SaveChangesAsync();
+
+                return new AssetDto
+                {
+                    Id = asset.Id,
+                    Name = asset.Name,
+                    Category = asset.Category,
+                    SerialNumber = asset.SerialNumber,
+                    PurchaseDate = asset.PurchaseDate,
+                    Status = asset.Status,
+                    ImageUrl = asset.ImageUrl,
+                    ImageData = asset.ImageData,
+                    ImageContentType = asset.ImageContentType,
+                    CreatedAt = asset.CreatedAt,
+                    UpdatedAt = asset.UpdatedAt
+                };
+            }
+            catch (InvalidOperationException)
             {
-                Id = asset.Id,
-                Name = asset.Name,
-                Category = asset.Category,
-                SerialNumber = asset.SerialNumber,
-                PurchaseDate = asset.PurchaseDate,
-                Status = asset.Status,
-                ImageUrl = asset.ImageUrl,
-                ImageData = asset.ImageData,
-                ImageContentType = asset.ImageContentType,
-                CreatedAt = asset.CreatedAt,
-                UpdatedAt = asset.UpdatedAt
-            };
+                throw; // Re-throw validation exceptions
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to create asset: {ex.Message}", ex);
+            }
         }
 
         public async Task<AssetDto?> UpdateAssetAsync(int id, UpdateAssetDto updateAssetDto)
@@ -144,7 +162,7 @@ namespace AssetManagementAPI.Services
             asset.SerialNumber = updateAssetDto.SerialNumber;
             asset.PurchaseDate = DateTime.SpecifyKind(updateAssetDto.PurchaseDate, DateTimeKind.Utc);
             asset.ImageUrl = updateAssetDto.ImageUrl;
-            asset.ImageData = updateAssetDto.ImageData;
+            asset.ImageData = !string.IsNullOrEmpty(updateAssetDto.ImageData) ? Convert.FromBase64String(updateAssetDto.ImageData) : null;
             asset.ImageContentType = updateAssetDto.ImageContentType;
             asset.UpdatedAt = DateTime.UtcNow;
 

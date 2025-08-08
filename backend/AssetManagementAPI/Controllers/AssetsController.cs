@@ -57,8 +57,19 @@ namespace AssetManagementAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<AssetDto>> CreateAsset(CreateAssetDto createAssetDto)
         {
-            var asset = await _assetService.CreateAssetAsync(createAssetDto);
-            return CreatedAtAction(nameof(GetAsset), new { id = asset.Id }, asset);
+            try
+            {
+                var asset = await _assetService.CreateAssetAsync(createAssetDto);
+                return CreatedAtAction(nameof(GetAsset), new { id = asset.Id }, asset);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while creating the asset. Please try again." });
+            }
         }
 
         [HttpPut("{id}")]

@@ -28,13 +28,13 @@ namespace AssetManagementAPI.DTOs
         [Required]
         public string SerialNumber { get; set; } = string.Empty;
         
-        public DateTime PurchaseDate { get; set; }
+        public DateTime? PurchaseDate { get; set; }
         
         public string? Status { get; set; }
         
         public string? ImageUrl { get; set; }
         
-        public byte[]? ImageData { get; set; }
+        public string? ImageData { get; set; } // Base64 string
         
         public string? ImageContentType { get; set; }
     }
@@ -54,7 +54,7 @@ namespace AssetManagementAPI.DTOs
         
         public string? ImageUrl { get; set; }
         
-        public byte[]? ImageData { get; set; }
+        public string? ImageData { get; set; } // Base64 string
         
         public string? ImageContentType { get; set; }
     }
