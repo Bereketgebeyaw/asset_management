@@ -40,12 +40,11 @@ dotnet restore
 # Install Entity Framework tools (if not already installed)
 dotnet tool install --global dotnet-ef
 
-# Add .NET tools to PATH (IMPORTANT: Run this in your terminal)
+# Add .NET tools to PATH
 export PATH="$HOME/.dotnet/tools:$PATH"
 
 # Update database credentials in appsettings.json
 # Replace the Database section with your PostgreSQL credentials:
-# You'll need to create a PostgreSQL database and user, or use existing credentials
 # "Database": {
 #   "Host": "localhost",
 #   "Port": 5432,
@@ -57,7 +56,7 @@ export PATH="$HOME/.dotnet/tools:$PATH"
 # Run database migrations to create tables
 dotnet ef database update
 
-# Seed the database with initial data (admin user, regular user, sample assets)
+# Seed the database with initial data
 dotnet run --seed
 
 # Start the backend server
@@ -86,7 +85,7 @@ npm run dev
 
 ## Database Setup
 
-### Manual Database Setup
+### Database Setup
 
 1. **Create PostgreSQL Database**
 
@@ -101,94 +100,18 @@ npm run dev
    GRANT ALL PRIVILEGES ON DATABASE assetmanagement TO your_username;
    ```
 
-3. **Install Entity Framework Tools**
-
-   ```bash
-   dotnet tool install --global dotnet-ef
-   ```
-
-4. **Add .NET Tools to PATH (CRITICAL STEP)**
-
-   ```bash
-   export PATH="$HOME/.dotnet/tools:$PATH"
-   ```
-
-   **Note**: You must run this command in your terminal before running migrations. To make it permanent, add this line to your shell profile:
-
-   ```bash
-   echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >> ~/.zshrc
-   source ~/.zshrc
-   ```
-
-5. **Run Migrations**
+3. **Run Migrations**
 
    ```bash
    cd backend/AssetManagementAPI
    dotnet ef database update
    ```
 
-6. **Seed Database**
+4. **Seed Database**
 
    ```bash
    dotnet run --seed
    ```
-
-### Troubleshooting
-
-#### Entity Framework Tools Not Found
-
-If you get an error like "dotnet-ef does not exist", follow these steps **in order**:
-
-1. **Check if tools are installed**:
-
-   ```bash
-   dotnet tool list --global
-   ```
-
-2. **Add tools to PATH** (run this in your terminal):
-
-   ```bash
-   export PATH="$HOME/.dotnet/tools:$PATH"
-   ```
-
-3. **Verify installation**:
-
-   ```bash
-   which dotnet-ef
-   ```
-
-4. **If still not working, reinstall**:
-
-   ```bash
-   dotnet tool uninstall --global dotnet-ef
-   dotnet tool install --global dotnet-ef
-   export PATH="$HOME/.dotnet/tools:$PATH"
-   ```
-
-5. **Make it permanent** (optional but recommended):
-
-   ```bash
-   echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >> ~/.zshrc
-   source ~/.zshrc
-   ```
-
-#### Port Already in Use
-
-If you get "address already in use" error:
-
-1. **Find the process using the port**:
-
-   ```bash
-   lsof -ti:5124
-   ```
-
-2. **Kill the process**:
-
-   ```bash
-   kill -9 <PID>
-   ```
-
-3. **Or use a different port** by updating `launchSettings.json`
 
 ### Database Tables
 
@@ -204,7 +127,11 @@ The seeding process creates:
 
 - **Admin User**: `admin@company.com` / `admin123`
 - **Regular User**: `user@company.com` / `user123`
-- **Sample Assets**: 5 pre-loaded assets across different categories
+- **Sample Assets**: 6 pre-loaded assets across different categories:
+  - **Laptops**: MacBook Pro 16-inch, Dell XPS 13
+  - **Phones**: iPhone 14 Pro, Samsung Galaxy S23
+  - **Monitors**: LG 27-inch Monitor
+  - **Tablets**: Apple iPad Pro
 
 ## Demo Credentials
 
@@ -262,6 +189,4 @@ The application uses PostgreSQL with Entity Framework Core. The database will be
 
 ### Sample Data
 
-- 5 pre-loaded assets across different categories
 - Admin and user accounts (see demo credentials above)
-- Sample asset requests
