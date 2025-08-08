@@ -2,15 +2,24 @@
 
 A full-stack web application for managing company assets with user authentication, role-based access control, and a modern responsive interface.
 
+## Tools Used
+
+- **Backend**: .NET 9.0
+- **Frontend**: React with Vite
+- **Database**: PostgreSQL
+- **ORM**: Entity Framework Core
+- **Authentication**: JWT
+- **Package Manager**: npm
+
 ## Setup Instructions
 
 ### Prerequisites
 
-- **Backend**: .NET 8 SDK
-- **Frontend**:Node v20.17.0 and npm
+- **Backend**: .NET 9.0 SDK
+- **Frontend**: Node v20.17.0 and npm
 - **Database**: PostgreSQL 12+
 
-### Option 1: Manual Setup
+### Manual Setup
 
 #### 1. Clone the Repository
 
@@ -74,34 +83,6 @@ npm run dev
 ```
 
 **Frontend will be running at:** http://localhost:5173
-
-### Option 2: Docker Compose (Recommended)
-
-If you have Docker and Docker Compose installed, you can start the entire application with one command:
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd asset-management-system
-
-# Start all services (database, backend, frontend)
-docker-compose up
-
-# Or run in background
-docker-compose up -d
-```
-
-**This will start:**
-
-- **Database**: PostgreSQL on port 5432
-- **Backend**: .NET API on http://localhost:5124
-- **Frontend**: React app on http://localhost:5173
-
-**To stop the application:**
-
-```bash
-docker-compose down
-```
 
 ## Database Setup
 
