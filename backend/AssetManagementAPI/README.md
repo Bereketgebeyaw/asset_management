@@ -1,6 +1,6 @@
 # Asset Management System - Backend API
 
-A robust .NET 8 Web API for managing company assets, user authentication, and asset requests.
+A robust .NET 9 Web API for managing company assets, user authentication, and asset requests.
 
 ## 🏗️ Architecture
 
@@ -22,25 +22,29 @@ AssetManagementAPI/
 
 ### Prerequisites
 
-- .NET 8 SDK
+- .NET 9 SDK
 - PostgreSQL 12+
 - Visual Studio 2022 or VS Code
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd asset-management-system/backend/AssetManagementAPI
    ```
 
 2. **Install dependencies**
+
    ```bash
    dotnet restore
    ```
 
 3. **Configure database**
+
    - Update `appsettings.json` with your PostgreSQL connection string
+
    ```json
    {
      "ConnectionStrings": {
@@ -50,11 +54,13 @@ AssetManagementAPI/
    ```
 
 4. **Run migrations**
+
    ```bash
    dotnet ef database update
    ```
 
 5. **Seed the database**
+
    ```bash
    dotnet run --seed
    ```
@@ -69,11 +75,13 @@ The API will be available at `https://localhost:7124` (or `http://localhost:5124
 ## 📋 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - User login
 - `POST /api/auth/logout` - User logout
 
 ### Assets (Admin Only)
+
 - `GET /api/assets` - Get all assets
 - `POST /api/assets` - Create new asset
 - `GET /api/assets/{id}` - Get asset by ID
@@ -82,6 +90,7 @@ The API will be available at `https://localhost:7124` (or `http://localhost:5124
 - `GET /api/assets/available` - Get available assets
 
 ### Asset Requests
+
 - `GET /api/assetrequests` - Get all requests (Admin)
 - `POST /api/assetrequests` - Create request (User)
 - `GET /api/assetrequests/my-requests` - Get user's requests
@@ -98,6 +107,7 @@ Authorization: Bearer <your-jwt-token>
 ## 🗄️ Database Schema
 
 ### Users
+
 - `Id` (Primary Key)
 - `Email` (Unique)
 - `PasswordHash`
@@ -106,6 +116,7 @@ Authorization: Bearer <your-jwt-token>
 - `UpdatedAt`
 
 ### Assets
+
 - `Id` (Primary Key)
 - `Name`
 - `Category`
@@ -117,6 +128,7 @@ Authorization: Bearer <your-jwt-token>
 - `UpdatedAt`
 
 ### AssetRequests
+
 - `Id` (Primary Key)
 - `UserId` (Foreign Key)
 - `AssetId` (Foreign Key)
@@ -131,17 +143,16 @@ Authorization: Bearer <your-jwt-token>
 The application comes with pre-loaded data:
 
 ### Admin User
+
 - Email: `admin@company.com`
 - Password: `admin123`
 - Role: Admin
 
 ### Regular User
+
 - Email: `user@company.com`
 - Password: `user123`
 - Role: User
-
-### Sample Assets
-- 5 pre-loaded assets across different categories (Laptop, Phone, Monitor, etc.)
 
 ## 🔧 Configuration
 
@@ -170,7 +181,7 @@ Key configuration options in `appsettings.json`:
 }
 ```
 
-## 🧪 Testing
+## Testing
 
 Run the test suite:
 
@@ -183,6 +194,7 @@ dotnet test
 ### Docker
 
 1. Build the image:
+
    ```bash
    docker build -t asset-management-api .
    ```
@@ -195,20 +207,9 @@ dotnet test
 ### Production
 
 1. Publish the application:
+
    ```bash
    dotnet publish -c Release -o ./publish
    ```
 
 2. Deploy to your preferred hosting platform
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.

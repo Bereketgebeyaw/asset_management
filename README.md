@@ -127,11 +127,6 @@ The seeding process creates:
 
 - **Admin User**: `admin@company.com` / `admin123`
 - **Regular User**: `user@company.com` / `user123`
-- **Sample Assets**: 6 pre-loaded assets across different categories:
-  - **Laptops**: MacBook Pro 16-inch, Dell XPS 13
-  - **Phones**: iPhone 14 Pro, Samsung Galaxy S23
-  - **Monitors**: LG 27-inch Monitor
-  - **Tablets**: Apple iPad Pro
 
 ## Demo Credentials
 
